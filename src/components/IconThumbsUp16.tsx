@@ -1,0 +1,34 @@
+import React from 'react';
+import { IconProps } from '../types';
+
+const IconThumbsUp16: React.FC<IconProps> = ({ 
+  size = 16, 
+  color = "currentColor", 
+  ariaHidden = true,
+  title,
+  ...props 
+}) => {
+  const svgProps = {
+    ...props,
+    width: size,
+    height: size,
+    fill: "none",
+    stroke: color,
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    'aria-hidden': ariaHidden,
+    role: ariaHidden ? undefined : 'img'
+  };
+
+  return (
+    <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      {title && !ariaHidden && <title>{title}</title>}
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M7.74068 1.33333C7.30452 1.33333 6.9031 1.57676 6.70273 1.96571L4.28103 6.66666H2.50004C1.85571 6.66666 1.33337 7.189 1.33337 7.83333V12.8333C1.33337 13.4777 1.85571 14 2.50004 14H11.6147C12.8502 14 13.9004 13.0975 14.0862 11.8761L14.6442 8.20943C14.8745 6.69629 13.7032 5.33333 12.1727 5.33333H9.26146L9.55524 3.44909C9.72881 2.3358 8.86418 1.33333 7.74068 1.33333ZM4.00004 7.66666V13H2.50004C2.40799 13 2.33337 12.9254 2.33337 12.8333V7.83333C2.33337 7.74128 2.40799 7.66666 2.50004 7.66666H4.00004Z" />
+    </svg>
+  );
+};
+
+IconThumbsUp16.displayName = 'IconThumbsUp16';
+
+export default IconThumbsUp16;

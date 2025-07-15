@@ -1,0 +1,34 @@
+import React from 'react';
+import { IconProps } from '../types';
+
+const IconMoon16: React.FC<IconProps> = ({ 
+  size = 16, 
+  color = "currentColor", 
+  ariaHidden = true,
+  title,
+  ...props 
+}) => {
+  const svgProps = {
+    ...props,
+    width: size,
+    height: size,
+    fill: "none",
+    stroke: color,
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    'aria-hidden': ariaHidden,
+    role: ariaHidden ? undefined : 'img'
+  };
+
+  return (
+    <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      {title && !ariaHidden && <title>{title}</title>}
+      <path d="M8.00004 1.33333C4.31814 1.33333 1.33337 4.3181 1.33337 8C1.33337 11.6819 4.31814 14.6667 8.00004 14.6667C11.6819 14.6667 14.6667 11.6819 14.6667 8C14.6667 7.95458 14.6662 7.90928 14.6653 7.86411C14.6616 7.67908 14.556 7.51124 14.3909 7.42781C14.2257 7.34438 14.0279 7.35901 13.8768 7.46584C13.2523 7.90735 12.4905 8.16666 11.6667 8.16666C9.54962 8.16666 7.83337 6.45042 7.83337 4.33333C7.83337 3.50949 8.09269 2.74771 8.53419 2.12323C8.64103 1.97212 8.65566 1.77436 8.57223 1.60918C8.4888 1.44399 8.32096 1.33839 8.13593 1.33469C8.09074 1.33378 8.04544 1.33333 8.00004 1.33333Z" />
+    </svg>
+  );
+};
+
+IconMoon16.displayName = 'IconMoon16';
+
+export default IconMoon16;

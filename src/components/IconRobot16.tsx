@@ -1,0 +1,34 @@
+import React from 'react';
+import { IconProps } from '../types';
+
+const IconRobot16: React.FC<IconProps> = ({ 
+  size = 16, 
+  color = "currentColor", 
+  ariaHidden = true,
+  title,
+  ...props 
+}) => {
+  const svgProps = {
+    ...props,
+    width: size,
+    height: size,
+    fill: "none",
+    stroke: color,
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    'aria-hidden': ariaHidden,
+    role: ariaHidden ? undefined : 'img'
+  };
+
+  return (
+    <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      {title && !ariaHidden && <title>{title}</title>}
+      <path d="M8 1.83333V3.16666M2 5.83333C1.72386 5.83333 1.5 6.05719 1.5 6.33333V7C1.5 7.27614 1.72386 7.5 2 7.5M14 7.5C14.2761 7.5 14.5 7.27614 14.5 7V6.33333C14.5 6.05719 14.2761 5.83333 14 5.83333M6.5 9.66666H9.5M6.16667 6.66666C6.16667 6.9428 5.94281 7.16666 5.66667 7.16666C5.39052 7.16666 5.16667 6.9428 5.16667 6.66666C5.16667 6.39052 5.39052 6.16666 5.66667 6.16666C5.94281 6.16666 6.16667 6.39052 6.16667 6.66666ZM10.8333 6.66666C10.8333 6.9428 10.6095 7.16666 10.3333 7.16666C10.0572 7.16666 9.83333 6.9428 9.83333 6.66666C9.83333 6.39052 10.0572 6.16666 10.3333 6.16666C10.6095 6.16666 10.8333 6.39052 10.8333 6.66666ZM13.8333 10.8333V5.16666C13.8333 4.06209 12.9379 3.16666 11.8333 3.16666H4.16667C3.0621 3.16666 2.16667 4.06209 2.16667 5.16666V10.8333C2.16667 11.9379 3.0621 12.8333 4.16667 12.8333H11.8333C12.9379 12.8333 13.8333 11.9379 13.8333 10.8333Z"    />
+    </svg>
+  );
+};
+
+IconRobot16.displayName = 'IconRobot16';
+
+export default IconRobot16;

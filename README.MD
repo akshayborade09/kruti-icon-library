@@ -346,7 +346,7 @@ OLA © Kruti
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to subOLA a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
