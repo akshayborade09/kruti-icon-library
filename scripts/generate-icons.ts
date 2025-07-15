@@ -6,8 +6,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Icon size directories
-const ICON_SIZES = ['16', '20', '24'];
+// Icon size directories (only generating 24px, size controlled via props)
+const ICON_SIZES = ['24'];
 const ICONS_DIR = path.join(__dirname, '../src/icons');
 const COMPONENTS_DIR = path.join(__dirname, '../src/components');
 
@@ -55,7 +55,7 @@ function createReactComponent(svgContent: string, componentName: string, size: s
 import { IconProps } from '../types';
 
 const ${componentName}: React.FC<IconProps> = ({ 
-  size = ${size}, 
+  size = 24, 
   color = "currentColor", 
   ariaHidden = true,
   title,
@@ -126,11 +126,7 @@ async function generateIconComponents() {
           ? nameWithoutExt.split(',').slice(1).map(alias => alias.trim())
           : [];
 
-        // Make component name unique by adding size suffix and handling duplicates
-        const baseComponentName = componentName;
-        componentName = size === '24' ? componentName : `${componentName}${size}`;
-        
-        // Handle duplicates by adding a counter
+        // Handle duplicates by adding a counter (no size suffix since we only generate 24px)
         let finalComponentName = componentName;
         let counter = 1;
         while (usedNames.has(finalComponentName)) {
@@ -156,7 +152,7 @@ async function generateIconComponents() {
           size
         });
 
-        console.log(`✅ Generated: ${finalComponentName} (${size}px)`);
+        console.log(`✅ Generated: ${finalComponentName}`);
       } catch (error) {
         console.error(`❌ Error processing ${file}:`, error);
       }
@@ -173,14 +169,14 @@ async function generateIconComponents() {
 
 export * from './components';
 export * from './types';
-export { default as IconProps } from './types';
 `;
   
   fs.writeFileSync(path.join(__dirname, '../src/index.ts'), mainIndexContent);
 
   console.log(`\n🎉 Successfully generated ${allIcons.length} icon components!`);
   console.log(`📦 Components exported from: src/components/index.ts`);
-  console.log(`🚀 Ready to use: import { IconArrowLeft, IconSearch } from 'kruti-icon-library'`);
+  console.log(`🚀 Ready to use: import { IconArrowLeft, IconMagnifyingGlass2 } from 'kruti-icon-library'`);
+  console.log(`📏 Control size with props: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />`);
 }
 
 // Function to generate index file with exports
@@ -201,7 +197,8 @@ ${imports}
 ${iconList}
 
 // Usage:
-// import { IconArrowLeft, IconSearch, IconSettings } from 'kruti-icon-library';
+// import { IconArrowLeft, IconMagnifyingGlass2, IconSettingsGear1 } from 'kruti-icon-library';
+// Control size: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />
 `;
 }
 
