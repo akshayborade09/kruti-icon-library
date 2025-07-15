@@ -1,0 +1,60 @@
+{
+  "name": "kruti-icon-library",
+  "version": "1.0.2",
+  "description": "React icon library with 16px, 20px, and 24px sizes",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build-icons": "tsx scripts/build-icons.ts",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepare": "npm run build-icons && npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@svgr/core": "^8.0.0",
+    "@svgr/plugin-jsx": "^8.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "react",
+    "icons",
+    "svg",
+    "16px",
+    "20px",
+    "24px",
+    "typescript",
+    "kruti"
+  ],
+  "author": "Kruti",
+  "license": "OLA",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/kruti-icon-library"
+  }
+}
