@@ -18,6 +18,8 @@ export { default as IconBubbles } from './IconBubbles';
 export { default as IconCamera1 } from './IconCamera1';
 export { default as IconCar } from './IconCar';
 export { default as IconCheckmark2 } from './IconCheckmark2';
+// Alias for IconCheckmark1
+export { default as IconCheckmark1 } from './IconCheckmark2';
 export { default as IconChevronBottom } from './IconChevronBottom';
 export { default as IconChevronLeft } from './IconChevronLeft';
 export { default as IconChevronRight } from './IconChevronRight';
@@ -31,10 +33,14 @@ export { default as IconFoodExperiences } from './IconFoodExperiences';
 export { default as IconGlobus } from './IconGlobus';
 export { default as IconGroup2 } from './IconGroup2';
 export { default as IconImageSparkle } from './IconImageSparkle';
+// Alias for IconImageAvatarSparkle
+export { default as IconImageAvatarSparkle } from './IconImageSparkle';
 export { default as IconLayoutGrid2 } from './IconLayoutGrid2';
 export { default as IconLayoutLeft } from './IconLayoutLeft';
 export { default as IconMagicEdit } from './IconMagicEdit';
 export { default as IconMagnifyingGlass2 } from './IconMagnifyingGlass2';
+// Alias for IconMagnifyingGlass
+export { default as IconMagnifyingGlass } from './IconMagnifyingGlass2';
 export { default as IconMapPin } from './IconMapPin';
 export { default as IconMicrophone } from './IconMicrophone';
 export { default as IconMinusLarge } from './IconMinusLarge';
