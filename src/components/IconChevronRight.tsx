@@ -13,10 +13,6 @@ const IconChevronRight: React.FC<IconProps> = ({
     width: size,
     height: size,
     fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
     'aria-hidden': ariaHidden,
     role: ariaHidden ? undefined : 'img'
   };
@@ -24,7 +20,7 @@ const IconChevronRight: React.FC<IconProps> = ({
   return (
     <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       {title && !ariaHidden && <title>{title}</title>}
-      <path d="M9 4L14.8787 9.87866C16.0503 11.0502 16.0503 12.9497 14.8787 14.1213L9 20"    />
+      <path d="M9 4L14.8787 9.87866C16.0503 11.0502 16.0503 12.9497 14.8787 14.1213L9 20" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 };

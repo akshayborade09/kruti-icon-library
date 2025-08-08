@@ -38,13 +38,13 @@ function createReactComponent(svgContent: string, componentName: string, size: s
 
   let svgInnerContent = svgMatch[1].trim();
   
-  // Clean up SVG content - remove hardcoded styling that conflicts with dynamic props
+  // Preserve original stroke attributes but make them dynamic
   svgInnerContent = svgInnerContent
-    .replace(/stroke="[^"]*"/g, '') // Remove hardcoded stroke color
-    .replace(/stroke-width="[^"]*"/g, '') // Remove hardcoded stroke width
-    .replace(/stroke-linecap="[^"]*"/g, '') // Remove hardcoded stroke linecap
-    .replace(/stroke-linejoin="[^"]*"/g, '') // Remove hardcoded stroke linejoin
-    .replace(/fill="[^"]*"/g, '') // Remove hardcoded fill
+    .replace(/stroke="[^"]*"/g, 'stroke={color}') // Replace hardcoded stroke color with dynamic prop
+    .replace(/stroke-width="([^"]*)"/g, 'strokeWidth="$1"') // Preserve original stroke width
+    .replace(/stroke-linecap="([^"]*)"/g, 'strokeLinecap="$1"') // Preserve original stroke linecap
+    .replace(/stroke-linejoin="([^"]*)"/g, 'strokeLinejoin="$1"') // Preserve original stroke linejoin
+    .replace(/fill="[^"]*"/g, 'fill={color}') // Replace hardcoded fill with dynamic prop
     .trim();
   
   // Extract viewBox from original SVG
@@ -66,10 +66,6 @@ const ${componentName}: React.FC<IconProps> = ({
     width: size,
     height: size,
     fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
     'aria-hidden': ariaHidden,
     role: ariaHidden ? undefined : 'img'
   };

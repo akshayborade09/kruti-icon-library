@@ -13,10 +13,6 @@ const IconArrowDown: React.FC<IconProps> = ({
     width: size,
     height: size,
     fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
     'aria-hidden': ariaHidden,
     role: ariaHidden ? undefined : 'img'
   };
@@ -24,7 +20,7 @@ const IconArrowDown: React.FC<IconProps> = ({
   return (
     <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       {title && !ariaHidden && <title>{title}</title>}
-      <path d="M18 14L12 20L6 14M12 19V4"    />
+      <path d="M18 14L12 20L6 14M12 19V4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 };

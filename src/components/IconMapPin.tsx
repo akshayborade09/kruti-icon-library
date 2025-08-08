@@ -13,10 +13,6 @@ const IconMapPin: React.FC<IconProps> = ({
     width: size,
     height: size,
     fill: "none",
-    stroke: color,
-    strokeWidth: 2,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
     'aria-hidden': ariaHidden,
     role: ariaHidden ? undefined : 'img'
   };
@@ -24,8 +20,8 @@ const IconMapPin: React.FC<IconProps> = ({
   return (
     <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       {title && !ariaHidden && <title>{title}</title>}
-      <path d="M14.4978 10C14.4978 11.3807 13.3785 12.5 11.9978 12.5C10.6171 12.5 9.4978 11.3807 9.4978 10C9.4978 8.61929 10.6171 7.5 11.9978 7.5C13.3785 7.5 14.4978 8.61929 14.4978 10Z"   />
-<path d="M19 10C19 13.9981 15.7482 17.6561 13.6773 19.5804C12.7179 20.4718 11.2821 20.4718 10.3227 19.5804C8.25176 17.6561 5 13.9981 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10Z"   />
+      <path d="M14.4978 10C14.4978 11.3807 13.3785 12.5 11.9978 12.5C10.6171 12.5 9.4978 11.3807 9.4978 10C9.4978 8.61929 10.6171 7.5 11.9978 7.5C13.3785 7.5 14.4978 8.61929 14.4978 10Z" stroke={color} strokeWidth="2" strokeLinejoin="round"/>
+<path d="M19 10C19 13.9981 15.7482 17.6561 13.6773 19.5804C12.7179 20.4718 11.2821 20.4718 10.3227 19.5804C8.25176 17.6561 5 13.9981 5 10C5 6.13401 8.13401 3 12 3C15.866 3 19 6.13401 19 10Z" stroke={color} strokeWidth="2" strokeLinejoin="round"/>
     </svg>
   );
 };
