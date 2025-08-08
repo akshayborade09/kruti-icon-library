@@ -1,30 +1,27 @@
 import React from 'react';
-import { IconProps } from '../types';
 
-const IconArrowLeft: React.FC<IconProps> = ({ 
-  size = 24, 
-  color = "currentColor", 
-  ariaHidden = true,
-  title,
-  ...props 
-}) => {
-  const svgProps = {
-    ...props,
-    width: size,
-    height: size,
-    fill: "none",
-    'aria-hidden': ariaHidden,
-    role: ariaHidden ? undefined : 'img'
-  };
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+  color?: string;
+}
 
-  return (
-    <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      {title && !ariaHidden && <title>{title}</title>}
-      <path d="M10 6L4 12L10 18M5 12H20" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-};
-
-IconArrowLeft.displayName = 'IconArrowLeft';
-
-export default IconArrowLeft;
+export const IconArrowLeft: React.FC<IconProps> = ({
+  size = 24,
+  color = 'currentColor',
+  strokeWidth = 2,
+  ...props
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M10 6L4 12L10 18M5 12H20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);

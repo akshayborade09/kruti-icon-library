@@ -28,59 +28,78 @@ function filenameToComponentName(filename: string): string {
   return `Icon${pascalCase}`;
 }
 
-// Function to create React component from SVG
-function createReactComponent(svgContent: string, componentName: string, size: string): string {
-  // Extract SVG attributes and content
-  const svgMatch = svgContent.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
-  if (!svgMatch) {
-    throw new Error('Invalid SVG content');
-  }
-
-  let svgInnerContent = svgMatch[1].trim();
-  
-  // Preserve original stroke attributes but make them dynamic
-  svgInnerContent = svgInnerContent
-    .replace(/stroke="[^"]*"/g, 'stroke={color}') // Replace hardcoded stroke color with dynamic prop
-    .replace(/stroke-width="([^"]*)"/g, 'strokeWidth="$1"') // Preserve original stroke width
-    .replace(/stroke-linecap="([^"]*)"/g, 'strokeLinecap="$1"') // Preserve original stroke linecap
-    .replace(/stroke-linejoin="([^"]*)"/g, 'strokeLinejoin="$1"') // Preserve original stroke linejoin
-    .replace(/fill="[^"]*"/g, 'fill={color}') // Replace hardcoded fill with dynamic prop
-    .trim();
-  
+// Function to extract SVG content while preserving original attributes
+function extractSVGContent(svgContent: string): { paths: string[], viewBox: string } {
   // Extract viewBox from original SVG
   const viewBoxMatch = svgContent.match(/viewBox="([^"]+)"/);
-  const viewBox = viewBoxMatch ? viewBoxMatch[1] : `0 0 ${size} ${size}`;
+  const viewBox = viewBoxMatch ? viewBoxMatch[1] : '0 0 24 24';
+
+  // Extract all path elements and their attributes
+  const pathMatches = svgContent.match(/<path[^>]*\/?>/g) || [];
+  const paths: string[] = [];
+
+  for (const pathMatch of pathMatches) {
+    // Extract the path data and other attributes
+    const pathDataMatch = pathMatch.match(/d="([^"]+)"/);
+    const strokeWidthMatch = pathMatch.match(/stroke-width="([^"]+)"/);
+    const strokeLinecapMatch = pathMatch.match(/stroke-linecap="([^"]+)"/);
+    const strokeLinejoinMatch = pathMatch.match(/stroke-linejoin="([^"]+)"/);
+    
+    if (pathDataMatch) {
+      let pathElement = `<path d="${pathDataMatch[1]}"`;
+      
+      // Preserve original stroke attributes if they exist
+      if (strokeWidthMatch) {
+        pathElement += ` strokeWidth="${strokeWidthMatch[1]}"`;
+      }
+      if (strokeLinecapMatch) {
+        pathElement += ` strokeLinecap="${strokeLinecapMatch[1]}"`;
+      }
+      if (strokeLinejoinMatch) {
+        pathElement += ` strokeLinejoin="${strokeLinejoinMatch[1]}"`;
+      }
+      
+      pathElement += ' />';
+      paths.push(pathElement);
+    }
+  }
+
+  return { paths, viewBox };
+}
+
+// Function to create React component from SVG
+function createReactComponent(svgContent: string, componentName: string): string {
+  const { paths, viewBox } = extractSVGContent(svgContent);
+  
+  const pathsContent = paths.join('\n    ');
 
   return `import React from 'react';
-import { IconProps } from '../types';
 
-const ${componentName}: React.FC<IconProps> = ({ 
-  size = 24, 
-  color = "currentColor", 
-  ariaHidden = true,
-  title,
-  ...props 
-}) => {
-  const svgProps = {
-    ...props,
-    width: size,
-    height: size,
-    fill: "none",
-    'aria-hidden': ariaHidden,
-    role: ariaHidden ? undefined : 'img'
-  };
+interface IconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number;
+  color?: string;
+}
 
-  return (
-    <svg {...svgProps} xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
-      {title && !ariaHidden && <title>{title}</title>}
-      ${svgInnerContent}
-    </svg>
-  );
-};
-
-${componentName}.displayName = '${componentName}';
-
-export default ${componentName};
+export const ${componentName}: React.FC<IconProps> = ({
+  size = 24,
+  color = 'currentColor',
+  strokeWidth = 2,
+  ...props
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="${viewBox}"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    ${pathsContent}
+  </svg>
+);
 `;
 }
 
@@ -122,7 +141,7 @@ async function generateIconComponents() {
           ? nameWithoutExt.split(',').slice(1).map(alias => alias.trim())
           : [];
 
-        // Handle duplicates by adding a counter (no size suffix since we only generate 24px)
+        // Handle duplicates by adding a counter
         let finalComponentName = componentName;
         let counter = 1;
         while (usedNames.has(finalComponentName)) {
@@ -132,7 +151,7 @@ async function generateIconComponents() {
         usedNames.add(finalComponentName);
 
         // Create React component
-        const componentCode = createReactComponent(svgContent, finalComponentName, size);
+        const componentCode = createReactComponent(svgContent, finalComponentName);
         
         // Write component file
         const componentFileName = `${finalComponentName}.tsx`;
@@ -178,7 +197,7 @@ export * from './types';
 // Function to generate index file with exports
 function generateIndexFile(icons: Array<{ name: string; component: string; aliases: string[]; size: string }>): string {
   const imports = icons.map(icon => 
-    `export { default as ${icon.component} } from './${icon.component}';`
+    `export { ${icon.component} } from './${icon.component}';`
   ).join('\n');
 
   const iconList = icons.map(icon => `//   ${icon.component} - ${icon.aliases.join(', ')}`).join('\n');
