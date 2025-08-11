@@ -128,3 +128,4 @@ export { IconVolumeFull } from './IconVolumeFull';
 // Usage:
 // import { IconArrowLeft, IconMagnifyingGlass2, IconSettingsGear1 } from 'kruti-icon-library';
 // Control size: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />
+// Control stroke: <IconArrowLeft strokeWidth={1} /> <IconArrowLeft strokeWidth={3} />

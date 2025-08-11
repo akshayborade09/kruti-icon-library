@@ -86,11 +86,13 @@ function createReactComponent(svgContent, componentName) {
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
 export const ${componentName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
+  strokeWidth = 2,
   ...props
 }) => (
   <svg
@@ -99,6 +101,7 @@ export const ${componentName}: React.FC<IconProps> = ({
     viewBox="${viewBox}"
     fill="none"
     stroke={color}
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
@@ -149,6 +152,7 @@ ${components.map(comp => `//   ${comp}`).join('\n')}
 // Usage:
 // import { IconArrowLeft, IconMagnifyingGlass2, IconSettingsGear1 } from 'kruti-icon-library';
 // Control size: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />
+// Control stroke: <IconArrowLeft strokeWidth={1} /> <IconArrowLeft strokeWidth={3} />
 `;
 
   await fs.writeFile(path.join(outDir, 'index.ts'), indexContent);

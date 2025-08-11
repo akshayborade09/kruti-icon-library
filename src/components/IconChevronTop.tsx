@@ -3,11 +3,13 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
 export const IconChevronTop: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
+  strokeWidth = 2,
   ...props
 }) => (
   <svg
@@ -16,6 +18,7 @@ export const IconChevronTop: React.FC<IconProps> = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
+    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
