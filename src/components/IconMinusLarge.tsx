@@ -12,6 +12,7 @@ export const IconMinusLarge: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconMinusLarge: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M3.5 12h17" strokeLinecap="round" />
+    <path stroke="#000" stroke-linecap="round" d="M3.5 12h17"/>
   </svg>
 );

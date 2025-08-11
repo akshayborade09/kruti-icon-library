@@ -21,9 +21,9 @@
   "scripts": {
     "generate-icons": "tsx scripts/generate-icons.ts",
     "build:icons": "node scripts/build-icons.js",
-    "build": "rollup -c",
+    "build": "npm run build:icons && rollup -c",
     "dev": "rollup -c -w",
-    "prepare": "npm run generate-icons && npm run build"
+    "prepare": "npm run build:icons && npm run build"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

@@ -12,6 +12,7 @@ export const IconChevronBottom: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconChevronBottom: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="m20 9-5.879 5.879a3 3 0 0 1-4.242 0L4 9" strokeLinecap="round" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="m20 9-5.879 5.879a3 3 0 0 1-4.242 0L4 9"/>
   </svg>
 );

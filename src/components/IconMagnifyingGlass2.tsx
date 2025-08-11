@@ -12,6 +12,7 @@ export const IconMagnifyingGlass2: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconMagnifyingGlass2: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="m20.5 20.5-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0" strokeLinecap="round" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="m20.5 20.5-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0"/>
   </svg>
 );

@@ -12,6 +12,7 @@ export const IconThunder: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconThunder: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M19.454 10.465h-5.888L16.38 1.84c.337-1.029-.976-1.8-1.744-1.022L3.796 11.8c-.641.65-.172 1.735.75 1.735h5.888L7.62 22.16c-.337 1.03.976 1.801 1.744 1.024L20.204 12.2c.641-.65.172-1.735-.75-1.735Z" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linejoin="round" d="M19.454 10.465h-5.888L16.38 1.84c.337-1.029-.976-1.8-1.744-1.022L3.796 11.8c-.641.65-.172 1.735.75 1.735h5.888L7.62 22.16c-.337 1.03.976 1.801 1.744 1.024L20.204 12.2c.641-.65.172-1.735-.75-1.735Z"/>
   </svg>
 );

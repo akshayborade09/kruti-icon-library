@@ -12,6 +12,7 @@ export const IconThumbsDown: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconThumbsDown: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M18.05 4v9h2.5a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5zm-.21 10h2.71a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H6.583a3.5 3.5 0 0 0-3.45 2.913l-.98 5.75a3.5 3.5 0 0 0 3.45 4.087h4.846l-.53 3.361A2.5 2.5 0 0 0 12.39 22h.03a1.5 1.5 0 0 0 1.305-.759z" />
+    <path fill="#000" fill-rule="evenodd" d="M18.05 4v9h2.5a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5zm-.21 10h2.71a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H6.583a3.5 3.5 0 0 0-3.45 2.913l-.98 5.75a3.5 3.5 0 0 0 3.45 4.087h4.846l-.53 3.361A2.5 2.5 0 0 0 12.39 22h.03a1.5 1.5 0 0 0 1.305-.759z" clip-rule="evenodd"/>
   </svg>
 );

@@ -12,6 +12,7 @@ export const IconCircleCheck: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconCircleCheck: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M15 9.5 10.5 15l-2-2m13-1a9.5 9.5 0 1 1-19 0 9.5 9.5 0 0 1 19 0" strokeLinecap="round" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M15 9.5 10.5 15l-2-2m13-1a9.5 9.5 0 1 1-19 0 9.5 9.5 0 0 1 19 0"/>
   </svg>
 );

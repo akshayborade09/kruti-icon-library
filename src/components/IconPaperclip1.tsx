@@ -12,6 +12,7 @@ export const IconPaperclip1: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconPaperclip1: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M5.5 10.5v5a6 6 0 0 0 12 0v-9a4 4 0 0 0-8 0v9a2 2 0 1 0 4 0v-8" strokeLinecap="round" />
+    <path stroke="#000" stroke-linecap="round" d="M5.5 10.5v5a6 6 0 0 0 12 0v-9a4 4 0 0 0-8 0v9a2 2 0 1 0 4 0v-8"/>
   </svg>
 );

@@ -12,6 +12,7 @@ export const IconGlobus: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconGlobus: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M12 21.5a9.5 9.5 0 0 0 0-19m0 19a9.5 9.5 0 0 1 0-19m0 19c-2.21 0-4-4.253-4-9.5s1.79-9.5 4-9.5m0 19c2.21 0 4-4.253 4-9.5s-1.79-9.5-4-9.5m9 9.5H3" strokeLinecap="square" />
+    <path stroke="#000" stroke-linecap="square" d="M12 21.5a9.5 9.5 0 0 0 0-19m0 19a9.5 9.5 0 0 1 0-19m0 19c-2.21 0-4-4.253-4-9.5s1.79-9.5 4-9.5m0 19c2.21 0 4-4.253 4-9.5s-1.79-9.5-4-9.5m9 9.5H3"/>
   </svg>
 );

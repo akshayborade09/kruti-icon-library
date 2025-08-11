@@ -12,6 +12,7 @@ export const IconPlusLarge: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconPlusLarge: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M12 3.5V12m0 0v8.5m0-8.5H3.5m8.5 0h8.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M12 3.5V12m0 0v8.5m0-8.5H3.5m8.5 0h8.5"/>
   </svg>
 );

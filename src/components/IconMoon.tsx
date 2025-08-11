@@ -12,6 +12,7 @@ export const IconMoon: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconMoon: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10v-.006a.5.5 0 0 0-.815-.388 6.25 6.25 0 0 1-8.791-8.791.5.5 0 0 0-.388-.815z" />
+    <path fill="#000" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10v-.006a.5.5 0 0 0-.815-.388 6.25 6.25 0 0 1-8.791-8.791.5.5 0 0 0-.388-.815z"/>
   </svg>
 );

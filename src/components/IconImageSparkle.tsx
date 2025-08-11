@@ -12,6 +12,7 @@ export const IconImageSparkle: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,8 +21,8 @@ export const IconImageSparkle: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="m16.5 20.5-7.086-7.086a2 2 0 0 0-2.828 0L3.5 16.5m3 4h11a3 3 0 0 0 3-3v-11a3 3 0 0 0-3-3h-11a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3Zm8-13.5-.833 1.667L12 9.5l1.667.833L14.5 12l.833-1.667L17 9.5l-1.667-.833z" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linejoin="round" d="m16.5 20.5-7.086-7.086a2 2 0 0 0-2.828 0L3.5 16.5m3 4h11a3 3 0 0 0 3-3v-11a3 3 0 0 0-3-3h-11a3 3 0 0 0-3 3v11a3 3 0 0 0 3 3Zm8-13.5-.833 1.667L12 9.5l1.667.833L14.5 12l.833-1.667L17 9.5l-1.667-.833z"/>
   </svg>
 );

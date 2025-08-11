@@ -12,6 +12,7 @@ export const IconMapPin: React.FC<IconProps> = ({
   ...props
 }) => (
   <svg
+    {...props}
     width={size}
     height={size}
     viewBox="0 0 24 24"
@@ -20,9 +21,8 @@ export const IconMapPin: React.FC<IconProps> = ({
     strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
-    {...props}
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M14.498 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" strokeLinejoin="round" />
-    <path d="M19.5 10c0 4.318-3.647 8.206-5.855 10.164a2.454 2.454 0 0 1-3.29 0C8.147 18.206 4.5 14.318 4.5 10c0-4.25 3.358-7.5 7.5-7.5s7.5 3.25 7.5 7.5Z" strokeLinejoin="round" />
+    <path stroke="#000" stroke-linejoin="round" d="M14.498 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/><path stroke="#000" stroke-linejoin="round" d="M19.5 10c0 4.318-3.647 8.206-5.855 10.164a2.454 2.454 0 0 1-3.29 0C8.147 18.206 4.5 14.318 4.5 10c0-4.25 3.358-7.5 7.5-7.5s7.5 3.25 7.5 7.5Z"/>
   </svg>
 );
