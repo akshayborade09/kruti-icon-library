@@ -20,9 +20,10 @@
   ],
   "scripts": {
     "generate-icons": "tsx scripts/generate-icons.ts",
+    "build:icons": "node scripts/build-icons.js",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "prepare": "npm run generate-icons && npm run build"
+    "prepare": "npm run build:icons && npm run build"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -30,12 +31,17 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.0.0",
+    "@svgr/cli": "^8.1.0",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "fs-extra": "^11.3.1",
     "rollup": "^4.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-terser": "^7.0.2",
+    "svgo": "^4.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   },

@@ -8,7 +8,6 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
 export const IconThumbsDown: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  strokeWidth = 2,
   ...props
 }) => (
   <svg
@@ -17,11 +16,10 @@ export const IconThumbsDown: React.FC<IconProps> = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M14.1967 20.8952C13.8607 21.572 13.1703 22 12.4147 22C10.5741 22 9.17547 20.3533 9.45744 18.5384L9.85181 16H5.98994C3.56858 16 1.71124 13.8576 2.03703 11.46L2.71645 6.46001C2.98543 4.48052 4.67151 3 6.66936 3L20 3C21.1046 3 22 3.89543 22 5L22 12C22 13.1046 21.1046 14 20 14H17.62L14.1967 20.8952ZM18 12H20L20 5H18L18 12Z" />
+    <path d="M17 13H20C20.5523 13 21 12.5523 21 12L21 5C21 4.44772 20.5523 4 20 4H17M17 13L17 4M17 13L13.301 20.4505C13.1339 20.7871 12.7905 21 12.4147 21V21C11.1917 21 10.2572 19.9046 10.4456 18.6919L11.0192 15L5.98994 15C4.17839 15 2.78316 13.3959 3.02793 11.5947L3.70735 6.59466C3.90933 5.1082 5.17443 4 6.66936 4H17" strokeWidth="2" strokeLinejoin="round" />
   </svg>
 );

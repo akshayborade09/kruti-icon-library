@@ -8,7 +8,6 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
 export const IconDotGrid1x3Horizontal: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  strokeWidth = 2,
   ...props
 }) => (
   <svg
@@ -17,7 +16,6 @@ export const IconDotGrid1x3Horizontal: React.FC<IconProps> = ({
     viewBox="0 0 24 24"
     fill="none"
     stroke={color}
-    strokeWidth={strokeWidth}
     strokeLinecap="round"
     strokeLinejoin="round"
     {...props}
