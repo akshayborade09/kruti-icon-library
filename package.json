@@ -1,6 +1,6 @@
 {
   "name": "kruti-icon-library",
-  "version": "1.5.1",
+  "version": "1.4.3",
   "description": "React icon library with 24px icons and dynamic sizing",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -23,7 +23,7 @@
     "build:icons": "node scripts/build-icons.js",
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "prepare": "npm run build:icons && npm run build"
+    "prepare": "npm run generate-icons && npm run build"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

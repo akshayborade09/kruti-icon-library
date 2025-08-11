@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconMagnifyingGlass2: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconMagnifyingGlass2: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M20 20L16.05 16.05M18 11C18 14.866 14.866 18 11 18C7.13401 18 4 14.866 4 11C4 7.13401 7.13401 4 11 4C14.866 4 18 7.13401 18 11Z" strokeWidth="2" strokeLinecap="round" />
+    <path d="m20.5 20.5-4.2-4.2m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

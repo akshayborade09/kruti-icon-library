@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconChevronBottom: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconChevronBottom: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M20 9L14.1213 14.8787C12.9498 16.0503 11.0503 16.0503 9.8787 14.8787L4 9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="m20 9-5.879 5.879a3 3 0 0 1-4.242 0L4 9" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

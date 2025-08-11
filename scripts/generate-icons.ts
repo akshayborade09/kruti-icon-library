@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { optimize } from 'svgo';
 
 // Get current directory in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +11,23 @@ const __dirname = path.dirname(__filename);
 const ICON_SIZES = ['24'];
 const ICONS_DIR = path.join(__dirname, '../src/icons');
 const COMPONENTS_DIR = path.join(__dirname, '../src/components');
+
+// SVGO configuration to preserve stroke width
+const svgoConfig = {
+  plugins: [
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          removeUnknownsAndDefaults: {
+            keepStrokeAndFill: true
+          }
+        }
+      }
+    },
+    { name: 'convertPathData', active: false } // prevent coordinate scaling
+  ]
+};
 
 // Function to convert filename to component name
 function filenameToComponentName(filename: string): string {
@@ -30,12 +48,15 @@ function filenameToComponentName(filename: string): string {
 
 // Function to extract SVG content while preserving original attributes
 function extractSVGContent(svgContent: string): { paths: string[], viewBox: string } {
-  // Extract viewBox from original SVG
-  const viewBoxMatch = svgContent.match(/viewBox="([^"]+)"/);
+  // Optimize SVG with SVGO while preserving stroke attributes
+  const optimizedSvg = optimize(svgContent, svgoConfig);
+  
+  // Extract viewBox from optimized SVG
+  const viewBoxMatch = optimizedSvg.data.match(/viewBox="([^"]+)"/);
   const viewBox = viewBoxMatch ? viewBoxMatch[1] : '0 0 24 24';
 
   // Extract all path elements and their attributes
-  const pathMatches = svgContent.match(/<path[^>]*\/?>/g) || [];
+  const pathMatches = optimizedSvg.data.match(/<path[^>]*\/?>/g) || [];
   const paths: string[] = [];
 
   for (const pathMatch of pathMatches) {

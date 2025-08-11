@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconMicrophone: React.FC<IconProps> = ({
@@ -23,6 +22,7 @@ export const IconMicrophone: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M12 19V21M12 19C8.32179 19 6.14683 16.7451 5.01434 15M12 19C15.6782 19 17.8532 16.7451 18.9857 15M16 7V11C16 13.2091 14.2092 15 12 15C9.79087 15 8.00001 13.2091 8.00001 11V7C8.00001 4.79086 9.79087 3 12 3C14.2092 3 16 4.79086 16 7Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7.5 7a4.5 4.5 0 1 1 9 0v5a4.5 4.5 0 1 1-9 0z" />
+    <path d="M12 19.5a7.5 7.5 0 0 0 7.23-5.5M12 19.5A7.5 7.5 0 0 1 4.77 14M12 19.5v2m0-5A4.5 4.5 0 0 1 7.5 12V7a4.5 4.5 0 1 1 9 0v5a4.5 4.5 0 0 1-4.5 4.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

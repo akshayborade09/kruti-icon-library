@@ -5,7 +5,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   color?: string;
 }
 
-export const IconPlusLarge: React.FC<IconProps> = ({
+export const IconPencil1: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = 2,
@@ -22,6 +22,6 @@ export const IconPlusLarge: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M12 3.5V12m0 0v8.5m0-8.5H3.5m8.5 0h8.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="m13.5 6 2.379-2.379a3 3 0 0 1 4.242 0l.258.258a3 3 0 0 1 0 4.242L18 10.5M13.5 6 2.793 16.707a1 1 0 0 0-.293.707V21.5h4.086a1 1 0 0 0 .707-.293L18 10.5M13.5 6l4.5 4.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

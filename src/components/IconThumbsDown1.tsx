@@ -5,7 +5,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   color?: string;
 }
 
-export const IconPlusLarge: React.FC<IconProps> = ({
+export const IconThumbsDown1: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = 2,
@@ -22,6 +22,6 @@ export const IconPlusLarge: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M12 3.5V12m0 0v8.5m0-8.5H3.5m8.5 0h8.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M17.55 13.5h3a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-3m0 10-4.26 7.494a1 1 0 0 1-.87.506h-.03a2 2 0 0 1-1.976-2.311l.62-3.939h-5.43a3 3 0 0 1-2.958-3.503l.98-5.75A3 3 0 0 1 6.582 3.5H17.55m0 10v-10" strokeLinejoin="round" />
   </svg>
 );

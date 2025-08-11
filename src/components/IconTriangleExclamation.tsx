@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconTriangleExclamation: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconTriangleExclamation: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M12 8.8846V11.9192M12 15H12.01M9.48223 4.43254L3.45153 14.3633C2.22395 16.3848 3.64405 19 5.9693 19H18.0307C20.3559 19 21.7761 16.3848 20.5485 14.3633L14.5178 4.43254C13.3578 2.52249 10.6422 2.52249 9.48223 4.43254ZM12.25 15C12.25 15.1381 12.1381 15.25 12 15.25C11.8619 15.25 11.75 15.1381 11.75 15C11.75 14.8619 11.8619 14.75 12 14.75C12.1381 14.75 12.25 14.8619 12.25 15Z" strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 9v4.5m0 2.5h.01M9.464 4.516 2.907 14.898C1.645 16.896 3.08 19.5 5.443 19.5h13.114c2.363 0 3.798-2.604 2.537-4.602L14.537 4.516c-1.178-1.864-3.896-1.864-5.073 0ZM12.25 16a.25.25 0 1 1-.5 0 .25.25 0 0 1 .5 0Z" strokeLinecap="round" />
   </svg>
 );

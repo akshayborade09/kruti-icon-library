@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconCrossLarge: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconCrossLarge: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M5 5L19 19M19 5L5 19" strokeWidth="2" strokeLinecap="round" />
+    <path d="m4.5 4.5 15 15m0-15-15 15" strokeLinecap="round" />
   </svg>
 );

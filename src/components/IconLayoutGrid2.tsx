@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconLayoutGrid2: React.FC<IconProps> = ({
@@ -23,9 +22,6 @@ export const IconLayoutGrid2: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M4 8.8C4 7.11984 4 6.27976 4.32698 5.63803C4.6146 5.07354 5.07354 4.6146 5.63803 4.32698C6.27976 4 7.11984 4 8.8 4H10V10H4V8.8Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M14 4H15.2C16.8802 4 17.7202 4 18.362 4.32698C18.9265 4.6146 19.3854 5.07354 19.673 5.63803C20 6.27976 20 7.11984 20 8.8V10H14V4Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M4 14H10V20H8.8C7.11984 20 6.27976 20 5.63803 19.673C5.07354 19.3854 4.6146 18.9265 4.32698 18.362C4 17.7202 4 16.8802 4 15.2V14Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M14 14H20V15.2C20 16.8802 20 17.7202 19.673 18.362C19.3854 18.9265 18.9265 19.3854 18.362 19.673C17.7202 20 16.8802 20 15.2 20H14V14Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M3.5 8.3c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C5.78 3.5 6.62 3.5 8.3 3.5h2.2v7h-7zm10-4.8h2.2c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311c.327.642.327 1.482.327 3.162v2.2h-7zm-10 10h7v7H8.3c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C3.5 18.22 3.5 17.38 3.5 15.7zm10 0h7v2.2c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311c-.642.327-1.482.327-3.162.327h-2.2z" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

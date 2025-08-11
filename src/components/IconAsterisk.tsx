@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconAsterisk: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconAsterisk: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M11.998 3V21M4.20382 7.5L19.7923 16.5M4.20312 16.5L19.7916 7.5" strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 2.5v19M3.774 7.25l16.455 9.5m-16.454 0 16.455-9.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

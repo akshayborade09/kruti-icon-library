@@ -3,7 +3,6 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
-  strokeWidth?: number;
 }
 
 export const IconThumbsUp: React.FC<IconProps> = ({
@@ -23,6 +22,6 @@ export const IconThumbsUp: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <path d="M7 11H4C3.44772 11 3 11.4477 3 12V19C3 19.5523 3.44772 20 4 20H7M7 11V20M7 11L11 3H11.6156C12.843 3 13.7808 4.09535 13.5917 5.3081L13.0161 9H18.0631C19.8811 9 21.2813 10.6041 21.0356 12.4053L20.3538 17.4053C20.1511 18.8918 18.8815 20 17.3813 20H7" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M11.63 2a1.5 1.5 0 0 0-1.304.759L6.21 10H3.5A1.5 1.5 0 0 0 2 11.5v8A1.5 1.5 0 0 0 3.5 21h13.968a3.5 3.5 0 0 0 3.45-2.913l.979-5.75a3.5 3.5 0 0 0-3.45-4.087H13.6l.53-3.361A2.5 2.5 0 0 0 11.66 2zM6 11v9H3.5a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5z" />
   </svg>
 );
