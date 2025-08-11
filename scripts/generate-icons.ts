@@ -19,7 +19,7 @@ function filenameToComponentName(filename: string): string {
   // Take only the first part before comma (main name)
   const mainName = nameWithoutExt.split(',')[0].trim();
   
-  // Convert to PascalCase for component names
+  // Convert to PascalCase
   const pascalCase = mainName
     .split(/[\s-_]+/)
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -28,24 +28,7 @@ function filenameToComponentName(filename: string): string {
   return `Icon${pascalCase}`;
 }
 
-// Function to convert filename to icon name
-function filenameToIconName(filename: string): string {
-  // Remove .svg extension
-  const nameWithoutExt = filename.replace('.svg', '');
-  
-  // Take only the first part before comma (main name)
-  const mainName = nameWithoutExt.split(',')[0].trim();
-  
-  // Convert to kebab-case for icon names
-  const kebabCase = mainName
-    .split(/[\s-_]+/)
-    .map(word => word.toLowerCase())
-    .join('-');
-  
-  return kebabCase;
-}
-
-// Function to extract SVG content while preserving all attributes
+// Function to extract SVG content while preserving original attributes
 function extractSVGContent(svgContent: string): { paths: string[], viewBox: string } {
   // Extract viewBox from original SVG
   const viewBoxMatch = svgContent.match(/viewBox="([^"]+)"/);
@@ -56,45 +39,48 @@ function extractSVGContent(svgContent: string): { paths: string[], viewBox: stri
   const paths: string[] = [];
 
   for (const pathMatch of pathMatches) {
-    // Keep the original path element as-is to preserve all attributes
-    paths.push(pathMatch);
+    // Extract the path data and other attributes
+    const pathDataMatch = pathMatch.match(/d="([^"]+)"/);
+    const strokeWidthMatch = pathMatch.match(/stroke-width="([^"]+)"/);
+    const strokeLinecapMatch = pathMatch.match(/stroke-linecap="([^"]+)"/);
+    const strokeLinejoinMatch = pathMatch.match(/stroke-linejoin="([^"]+)"/);
+    
+    if (pathDataMatch) {
+      let pathElement = `<path d="${pathDataMatch[1]}"`;
+      
+      // Preserve original stroke attributes if they exist
+      if (strokeWidthMatch) {
+        pathElement += ` strokeWidth="${strokeWidthMatch[1]}"`;
+      }
+      if (strokeLinecapMatch) {
+        pathElement += ` strokeLinecap="${strokeLinecapMatch[1]}"`;
+      }
+      if (strokeLinejoinMatch) {
+        pathElement += ` strokeLinejoin="${strokeLinejoinMatch[1]}"`;
+      }
+      
+      pathElement += ' />';
+      paths.push(pathElement);
+    }
   }
 
   return { paths, viewBox };
 }
 
-// Function to generate SVG sprite sheet
-function generateSpriteSheet(svgFiles: Array<{ name: string; content: string; aliases: string[] }>): string {
-  let spriteContent = `<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">\n  <defs>\n`;
+// Function to create React component from SVG
+function createReactComponent(svgContent: string, componentName: string): string {
+  const { paths, viewBox } = extractSVGContent(svgContent);
   
-  for (const file of svgFiles) {
-    const { paths, viewBox } = extractSVGContent(file.content);
-    const iconName = filenameToIconName(file.name);
-    
-    spriteContent += `    <symbol id="icon-${iconName}" viewBox="${viewBox}">\n`;
-    for (const path of paths) {
-      spriteContent += `      ${path}\n`;
-    }
-    spriteContent += `    </symbol>\n`;
-  }
-  
-  spriteContent += `  </defs>\n</svg>`;
-  
-  return spriteContent;
-}
+  const pathsContent = paths.join('\n    ');
 
-// Function to generate React component that uses the sprite sheet
-function generateIconComponent(icons: Array<{ name: string; component: string; aliases: string[]; size: string }>): string {
-  const baseComponent = `import React from 'react';
+  return `import React from 'react';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
-  name: string;
   size?: number;
   color?: string;
 }
 
-export const Icon: React.FC<IconProps> = ({
-  name,
+export const ${componentName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = 2,
@@ -103,6 +89,7 @@ export const Icon: React.FC<IconProps> = ({
   <svg
     width={size}
     height={size}
+    viewBox="${viewBox}"
     fill="none"
     stroke={color}
     strokeWidth={strokeWidth}
@@ -110,35 +97,21 @@ export const Icon: React.FC<IconProps> = ({
     strokeLinejoin="round"
     {...props}
   >
-    <use href={\`#icon-\${name}\`} />
+    ${pathsContent}
   </svg>
 );
-
-// Individual icon components for convenience`;
-
-  const individualComponents = icons.map(icon => {
-    const iconName = icon.name;
-    return `export const ${icon.component}: React.FC<Omit<IconProps, 'name'>> = (props) => (
-  <Icon name="${iconName}" {...props} />
-);`;
-  }).join('\n\n');
-
-  return `${baseComponent}
-
-${individualComponents}
 `;
 }
 
 // Function to generate icon components
 async function generateIconComponents() {
-  console.log('🎨 Generating SVG sprite sheet and React components...\n');
+  console.log('🎨 Generating React icon components...\n');
   
   // Create components directory if it doesn't exist
   if (!fs.existsSync(COMPONENTS_DIR)) {
     fs.mkdirSync(COMPONENTS_DIR, { recursive: true });
   }
 
-  const svgFiles: Array<{ name: string; content: string; aliases: string[] }> = [];
   const allIcons: Array<{ name: string; component: string; aliases: string[]; size: string }> = [];
   const usedNames = new Set<string>(); // Track used component names to avoid duplicates
 
@@ -159,8 +132,8 @@ async function generateIconComponents() {
         const filePath = path.join(sizeDir, file);
         const svgContent = fs.readFileSync(filePath, 'utf-8');
         
-        // Generate icon name
-        const iconName = filenameToIconName(file);
+        // Generate component name
+        let componentName = filenameToComponentName(file);
         
         // Extract aliases from filename (parts after comma)
         const nameWithoutExt = file.replace('.svg', '');
@@ -168,46 +141,38 @@ async function generateIconComponents() {
           ? nameWithoutExt.split(',').slice(1).map(alias => alias.trim())
           : [];
 
-        // Store SVG content for sprite sheet
-        svgFiles.push({
-          name: file,
-          content: svgContent,
-          aliases
-        });
-
-        // Generate component name and handle duplicates
-        let componentName = filenameToComponentName(file);
+        // Handle duplicates by adding a counter
+        let finalComponentName = componentName;
         let counter = 1;
-        while (usedNames.has(componentName)) {
-          componentName = `${filenameToComponentName(file)}${counter}`;
+        while (usedNames.has(finalComponentName)) {
+          finalComponentName = `${componentName}${counter}`;
           counter++;
         }
-        usedNames.add(componentName);
+        usedNames.add(finalComponentName);
 
+        // Create React component
+        const componentCode = createReactComponent(svgContent, finalComponentName);
+        
+        // Write component file
+        const componentFileName = `${finalComponentName}.tsx`;
+        const componentPath = path.join(COMPONENTS_DIR, componentFileName);
+        
+        fs.writeFileSync(componentPath, componentCode);
+        
         // Store icon info
         allIcons.push({
-          name: iconName,
-          component: componentName,
+          name: finalComponentName,
+          component: finalComponentName,
           aliases,
           size
         });
 
-        console.log(`✅ Processed: ${iconName} -> ${componentName}`);
+        console.log(`✅ Generated: ${finalComponentName}`);
       } catch (error) {
         console.error(`❌ Error processing ${file}:`, error);
       }
     }
   }
-
-  // Generate SVG sprite sheet
-  const spriteSheet = generateSpriteSheet(svgFiles);
-  fs.writeFileSync(path.join(__dirname, '../public/sprite.svg'), spriteSheet);
-  console.log(`✅ Generated sprite sheet: public/sprite.svg`);
-
-  // Generate React component
-  const componentCode = generateIconComponent(allIcons);
-  fs.writeFileSync(path.join(COMPONENTS_DIR, 'Icon.tsx'), componentCode);
-  console.log(`✅ Generated React component: src/components/Icon.tsx`);
 
   // Generate index file with all exports
   const indexContent = generateIndexFile(allIcons);
@@ -223,19 +188,17 @@ export * from './types';
   
   fs.writeFileSync(path.join(__dirname, '../src/index.ts'), mainIndexContent);
 
-  console.log(`\n🎉 Successfully generated sprite sheet with ${allIcons.length} icons!`);
+  console.log(`\n🎉 Successfully generated ${allIcons.length} icon components!`);
   console.log(`📦 Components exported from: src/components/index.ts`);
-  console.log(`🎨 Sprite sheet available at: public/sprite.svg`);
-  console.log(`🚀 Ready to use: import { Icon, IconArrowLeft } from 'kruti-icon-library'`);
-  console.log(`📏 Control size with props: <Icon name="arrow-left" size={16} /> <IconArrowLeft size={20} />`);
+  console.log(`🚀 Ready to use: import { IconArrowLeft, IconMagnifyingGlass2 } from 'kruti-icon-library'`);
+  console.log(`📏 Control size with props: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />`);
 }
 
 // Function to generate index file with exports
 function generateIndexFile(icons: Array<{ name: string; component: string; aliases: string[]; size: string }>): string {
-  const imports = [
-    `export { Icon } from './Icon';`,
-    ...icons.map(icon => `export { ${icon.component} } from './Icon';`)
-  ].join('\n');
+  const imports = icons.map(icon => 
+    `export { ${icon.component} } from './${icon.component}';`
+  ).join('\n');
 
   const iconList = icons.map(icon => `//   ${icon.component} - ${icon.aliases.join(', ')}`).join('\n');
 
@@ -249,8 +212,8 @@ ${imports}
 ${iconList}
 
 // Usage:
-// import { Icon, IconArrowLeft, IconMagnifyingGlass2 } from 'kruti-icon-library';
-// Control size: <Icon name="arrow-left" size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />
+// import { IconArrowLeft, IconMagnifyingGlass2, IconSettingsGear1 } from 'kruti-icon-library';
+// Control size: <IconArrowLeft size={16} /> <IconArrowLeft size={20} /> <IconArrowLeft size={32} />
 `;
 }
 
