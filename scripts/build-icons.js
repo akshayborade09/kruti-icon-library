@@ -41,14 +41,40 @@ const svgoConfig = {
     const svgPath = path.join(iconsDir, file);
     const svgCode = await fs.readFile(svgPath, 'utf8');
 
-    // Extract main name before comma for component name
+    // Extract name and create a unique component name
     const nameWithoutExt = file.replace('.svg', '');
-    const mainName = nameWithoutExt.split(',')[0].trim();
+    const parts = nameWithoutExt.split(',').map(part => part.trim());
     
-    const componentName = mainName
-      .split(/[\s-_]+/)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('');
+    // Create component name with key distinguishing parts
+    let componentName;
+    if (parts.length > 1) {
+      // For files with multiple parts, include key distinguishing words
+      const mainPart = parts[0];
+      const keyWords = parts.slice(1).filter(part => 
+        ['active', 'yes', 'no', 'contra', 'pro'].includes(part.toLowerCase())
+      );
+      
+      if (keyWords.length > 0) {
+        componentName = mainPart
+          .split(/[\s-_]+/)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join('') + 
+          keyWords
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join('');
+      } else {
+        componentName = mainPart
+          .split(/[\s-_]+/)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join('');
+      }
+    } else {
+      // For simple names, just use the main part
+      componentName = parts[0]
+        .split(/[\s-_]+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join('');
+    }
 
     // Optimize SVG with SVGO while preserving stroke properties
     const result = optimize(svgCode, svgoConfig);
@@ -58,8 +84,8 @@ const svgoConfig = {
     const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/s);
     const innerContent = innerContentMatch ? innerContentMatch[1].trim() : '';
 
-    // Convert SVG elements to React.createElement calls
-    const reactElements = innerContent
+    // Convert SVG elements to JSX
+    const jsxElements = innerContent
       .replace(/<path\s+([^>]*)\/>/g, (match, attrs) => {
         const attrObj = {};
         attrs.match(/(\w+)="([^"]*)"/g)?.forEach(attr => {
@@ -74,10 +100,10 @@ const svgoConfig = {
         delete attrObj['stroke-linejoin'];
         
         const attrString = Object.entries(attrObj)
-          .map(([key, value]) => `"${key}": "${value}"`)
-          .join(', ');
+          .map(([key, value]) => `${key}="${value}"`)
+          .join(' ');
         
-        return `React.createElement('path', { ${attrString} })`;
+        return `<path ${attrString} />`;
       })
       .replace(/<circle\s+([^>]*)\/>/g, (match, attrs) => {
         const attrObj = {};
@@ -93,10 +119,10 @@ const svgoConfig = {
         delete attrObj['stroke-linejoin'];
         
         const attrString = Object.entries(attrObj)
-          .map(([key, value]) => `"${key}": "${value}"`)
-          .join(', ');
+          .map(([key, value]) => `${key}="${value}"`)
+          .join(' ');
         
-        return `React.createElement('circle', { ${attrString} })`;
+        return `<circle ${attrString} />`;
       })
       .replace(/<rect\s+([^>]*)\/>/g, (match, attrs) => {
         const attrObj = {};
@@ -112,39 +138,33 @@ const svgoConfig = {
         delete attrObj['stroke-linejoin'];
         
         const attrString = Object.entries(attrObj)
-          .map(([key, value]) => `"${key}": "${value}"`)
-          .join(', ');
+          .map(([key, value]) => `${key}="${value}"`)
+          .join(' ');
         
-        return `React.createElement('rect', { ${attrString} })`;
+        return `<rect ${attrString} />`;
       });
 
-    // Split multiple elements and wrap in array
-    const elementArray = reactElements
-      .split(/(?=React\.createElement)/)
-      .filter(el => el.trim())
-      .join(', ');
+    // Create the React component with JSX syntax
+    const componentCode = `import React from 'react';
 
-    // Create the React component with preserved stroke properties
-    const componentCode = `import * as React from 'react';
-
-const Icon${componentName} = (props) => {
-  const { size = 24, color = 'currentColor', strokeWidth = 2, ...restProps } = props;
-  
-  return React.createElement('svg', {
-    width: size,
-    height: size,
-    stroke: color,
-    strokeWidth: strokeWidth,
-    fill: 'none',
-    viewBox: '0 0 24 24',
-    ...restProps
-  }, [${elementArray}]);
-};
+const Icon${componentName} = ({ size = 24, color = 'currentColor', strokeWidth = 2, ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    stroke={color}
+    strokeWidth={strokeWidth}
+    fill="none"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    ${jsxElements}
+  </svg>
+);
 
 export default Icon${componentName};
 `;
 
-    await fs.writeFile(path.join(outDir, `Icon${componentName}.js`), componentCode, 'utf8');
+    await fs.writeFile(path.join(outDir, `Icon${componentName}.jsx`), componentCode, 'utf8');
   }
 
   console.log(`✅ Icons built successfully into ${outDir}`);

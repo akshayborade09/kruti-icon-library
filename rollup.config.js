@@ -2,6 +2,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import terser from '@rollup/plugin-terser';
+import babel from '@rollup/plugin-babel';
 
 export default {
   input: 'src/index.ts',
@@ -24,12 +25,17 @@ export default {
       browser: true,
       extensions: ['.js', '.jsx', '.ts', '.tsx']
     }),
+    babel({
+      babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      presets: ['@babel/preset-react']
+    }),
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
       declarationDir: './dist',
-      exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.ts', '**/*.stories.tsx'],
-      jsx: 'react-jsx'
+      exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.ts', '**/*.stories.tsx']
     }),
     terser()
   ],
