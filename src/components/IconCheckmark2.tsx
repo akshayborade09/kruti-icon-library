@@ -24,6 +24,6 @@ export const IconCheckmark2: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path stroke="#000" stroke-linecap="round" d="m2.5 15.5 6.706 5L21.5 3.5"/>
+    <path stroke="#000" stroke-linecap="round" d="M2.5 15.5L9.20588 20.5L21.5 3.5"/>
   </svg>
 );

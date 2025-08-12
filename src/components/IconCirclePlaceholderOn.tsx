@@ -24,6 +24,6 @@ export const IconCirclePlaceholderOn: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path stroke="#000" stroke-linejoin="round" d="M21.5 12a9.5 9.5 0 1 1-19 0 9.5 9.5 0 0 1 19 0Z"/>
+    <path stroke="#000" stroke-linejoin="round" d="M21.5 12C21.5 17.2467 17.2467 21.5 12 21.5C6.75329 21.5 2.5 17.2467 2.5 12C2.5 6.75329 6.75329 2.5 12 2.5C17.2467 2.5 21.5 6.75329 21.5 12Z"/>
   </svg>
 );

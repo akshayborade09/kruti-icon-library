@@ -24,6 +24,6 @@ export const IconChevronRight: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="m9 4 5.879 5.879a3 3 0 0 1 0 4.242L9 20"/>
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M9 4L14.8787 9.87866C16.0503 11.0502 16.0503 12.9497 14.8787 14.1213L9 20"/>
   </svg>
 );

@@ -1,55 +1,56 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { optimize } = require('svgo');
+
+const iconsDir = path.join(__dirname, '../src/icons');
+const componentsDir = path.join(__dirname, '../src/components');
 const svgoConfig = require('../svgo.config');
 
-const iconsDir = path.join(__dirname, '../src/icons/24');
-const componentsDir = path.join(__dirname, '../src/components');
-
-(async () => {
-  await fs.ensureDir(componentsDir);
-
-  const files = await fs.readdir(iconsDir);
-  const iconExports = [];
-  const usedNames = new Set();
-
-  for (const file of files) {
-    if (!file.endsWith('.svg')) continue;
-
-    const svgPath = path.join(iconsDir, file);
-    const svgCode = await fs.readFile(svgPath, 'utf8');
-
-    // Extract the first part of the filename (before any comma) for the component name
-    let componentName = file
-      .split(',')[0] // Take only the first part before comma
-      .replace(/\.svg$/, '')
-      .replace(/(^\w|-\w)/g, clear => clear.replace('-', '').toUpperCase());
-
-    // Handle duplicate names by adding a number suffix
-    let finalName = componentName;
-    let counter = 1;
-    while (usedNames.has(finalName)) {
-      finalName = `${componentName}${counter}`;
-      counter++;
-    }
-    usedNames.add(finalName);
-
-    try {
-      // Optimize SVG with SVGO while preserving stroke attributes
-      const result = optimize(svgCode, svgoConfig);
-      let optimizedSvg = result.data;
-
-      // Extract the inner content (everything between <svg> tags)
-      const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
-      const innerContent = innerContentMatch ? innerContentMatch[1] : '';
-
-      // Detect if the original SVG has stroke-width attribute
-      const hasOriginalStrokeWidth = /stroke-width=["']([^"']+)["']/.test(svgCode);
-      const originalStrokeWidthMatch = svgCode.match(/stroke-width=["']([^"']+)["']/);
-      const originalStrokeWidth = originalStrokeWidthMatch ? originalStrokeWidthMatch[1] : null;
-
-      // Generate React component with preserved stroke attributes
-      const reactComponent = `import React from 'react';
+async function buildIcons() {
+  try {
+    // Ensure components directory exists
+    await fs.ensureDir(componentsDir);
+    
+    // Clear existing components
+    await fs.emptyDir(componentsDir);
+    
+    const iconExports = [];
+    
+    // Read all SVG files from icons directory
+    const svgFiles = await fs.readdir(iconsDir);
+    const svgFilesFiltered = svgFiles.filter(file => file.endsWith('.svg'));
+    
+    console.log(`Found ${svgFilesFiltered.length} SVG files`);
+    
+    for (const file of svgFilesFiltered) {
+      try {
+        const filePath = path.join(iconsDir, file);
+        const svgCode = await fs.readFile(filePath, 'utf8');
+        
+        // Generate component name from filename
+        const baseName = path.basename(file, '.svg');
+        const componentName = `Icon${baseName
+          .split(/[,\s-]+/)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join('')}`;
+        
+        console.log(`Processing: ${file} -> ${componentName}`);
+        
+        // Optimize SVG with SVGO while preserving stroke attributes
+        const result = optimize(svgCode, svgoConfig);
+        let optimizedSvg = result.data;
+        
+        // Extract the inner content (everything between <svg> tags)
+        const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
+        const innerContent = innerContentMatch ? innerContentMatch[1] : '';
+        
+        // Detect if the original SVG has stroke-width attribute
+        const hasOriginalStrokeWidth = /stroke-width=["']([^"']+)["']/.test(svgCode);
+        const originalStrokeWidthMatch = svgCode.match(/stroke-width=["']([^"']+)["']/);
+        const originalStrokeWidth = originalStrokeWidthMatch ? originalStrokeWidthMatch[1] : null;
+        
+        // Generate React component with preserved stroke attributes
+        const reactComponent = `import React from 'react';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
@@ -57,7 +58,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   strokeWidth?: number;
 }
 
-export const Icon${finalName}: React.FC<IconProps> = ({
+export const ${componentName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = ${originalStrokeWidth || '1'},
@@ -79,55 +80,18 @@ export const Icon${finalName}: React.FC<IconProps> = ({
   </svg>
 );
 `;
-
-      await fs.writeFile(path.join(componentsDir, `Icon${finalName}.tsx`), reactComponent, 'utf8');
-      console.log(`✅ Generated: Icon${finalName}`);
-      
-      // Add to exports list
-      iconExports.push(`Icon${finalName}`);
-    } catch (error) {
-      console.error(`❌ Error processing ${file}:`, error);
-      
-      // Fallback: generate a basic component manually
-      const fallbackComponent = `import React from 'react';
-
-interface IconProps extends React.SVGProps<SVGSVGElement> {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-}
-
-export const Icon${finalName}: React.FC<IconProps> = ({
-  size = 24,
-  color = 'currentColor',
-  strokeWidth = ${originalStrokeWidth || '1'},
-  ...props
-}) => (
-  <svg
-    {...props}
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke={color}
-    strokeWidth={strokeWidth}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M10 5.5L3.5 12L10 18.5M4 12H20.5" />
-  </svg>
-);
-`;
-      
-      await fs.writeFile(path.join(componentsDir, `Icon${finalName}.tsx`), fallbackComponent, 'utf8');
-      iconExports.push(`Icon${finalName}`);
-      console.log(`✅ Generated fallback: Icon${finalName}`);
+        
+        await fs.writeFile(path.join(componentsDir, `${componentName}.tsx`), reactComponent, 'utf8');
+        iconExports.push(componentName);
+        console.log(`✅ Generated: ${componentName}`);
+        
+      } catch (error) {
+        console.error(`❌ Error processing ${file}:`, error);
+      }
     }
-  }
-
-  // Generate index.ts file
-  const indexContent = `// Auto-generated icon exports
+    
+    // Generate index.ts file
+    const indexContent = `// Auto-generated icon exports
 // This file is automatically generated by scripts/build-icons.js
 // Do not edit manually
 
@@ -141,8 +105,15 @@ ${iconExports.map(name => `//   ${name}`).join('\n')}
 // Control size: <${iconExports[0]} size={16} /> <${iconExports[0]} size={20} /> <${iconExports[0]} size={32} />
 `;
 
-  await fs.writeFile(path.join(componentsDir, 'index.ts'), indexContent, 'utf8');
+    await fs.writeFile(path.join(componentsDir, 'index.ts'), indexContent, 'utf8');
+    
+    console.log(`\n✅ Icons built successfully into ${componentsDir}`);
+    console.log(`✅ Generated ${iconExports.length} icons`);
+    
+  } catch (error) {
+    console.error('❌ Build failed:', error);
+    process.exit(1);
+  }
+}
 
-  console.log(`\n✅ Icons built successfully into ${componentsDir}`);
-  console.log(`✅ Generated ${iconExports.length} icons`);
-})();
+buildIcons();

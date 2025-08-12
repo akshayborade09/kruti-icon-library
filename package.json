@@ -23,7 +23,8 @@
     "build:icons": "node scripts/build-icons.js",
     "build": "npm run build:icons && rollup -c",
     "dev": "rollup -c -w",
-    "prepare": "npm run build:icons && npm run build"
+    "prepare": "npm run build:icons && npm run build",
+    "clean": "rm -rf src/components dist"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -35,6 +36,7 @@
     "@rollup/plugin-typescript": "^11.0.0",
     "@svgr/cli": "^8.1.0",
     "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",

@@ -24,6 +24,6 @@ export const IconArrowLeft: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M10 5.5 3.5 12l6.5 6.5M4 12h16.5"/>
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M10 5.5L3.5 12L10 18.5M4 12H20.5"/>
   </svg>
 );
