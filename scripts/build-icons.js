@@ -43,18 +43,24 @@ const componentsDir = path.join(__dirname, '../src/components');
       const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
       const innerContent = innerContentMatch ? innerContentMatch[1] : '';
 
+      // Detect if the original SVG has stroke-width attribute
+      const hasOriginalStrokeWidth = /stroke-width=["']([^"']+)["']/.test(svgCode);
+      const originalStrokeWidthMatch = svgCode.match(/stroke-width=["']([^"']+)["']/);
+      const originalStrokeWidth = originalStrokeWidthMatch ? originalStrokeWidthMatch[1] : null;
+
       // Generate React component with preserved stroke attributes
       const reactComponent = `import React from 'react';
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
 export const Icon${finalName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  strokeWidth = 2,
+  strokeWidth = ${originalStrokeWidth || '1'},
   ...props
 }) => (
   <svg
@@ -88,12 +94,13 @@ export const Icon${finalName}: React.FC<IconProps> = ({
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
 export const Icon${finalName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  strokeWidth = 2,
+  strokeWidth = ${originalStrokeWidth || '1'},
   ...props
 }) => (
   <svg

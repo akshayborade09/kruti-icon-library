@@ -3,12 +3,13 @@ import React from 'react';
 interface IconProps extends React.SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
 export const IconCamera1: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
-  strokeWidth = 2,
+  strokeWidth = 1,
   ...props
 }) => (
   <svg
