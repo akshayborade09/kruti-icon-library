@@ -23,6 +23,6 @@ export const IconThumbsUp: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path fill="#000" fill-rule="evenodd" d="M11.63 2a1.5 1.5 0 0 0-1.304.759L6.21 10H3.5A1.5 1.5 0 0 0 2 11.5v8A1.5 1.5 0 0 0 3.5 21h13.968a3.5 3.5 0 0 0 3.45-2.913l.979-5.75a3.5 3.5 0 0 0-3.45-4.087H13.6l.53-3.361A2.5 2.5 0 0 0 11.66 2zM6 11v9H3.5a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5z" clip-rule="evenodd"/>
+    <path fill="#000" fill-rule="evenodd" d="M11 2a1 1 0 0 0-.894.553L6.382 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h13.381a4 4 0 0 0 3.964-3.46l.681-5A4 4 0 0 0 18.063 8h-3.879l.396-2.538A3 3 0 0 0 11.616 2zM6 19v-7H4v7z" clip-rule="evenodd"/>
   </svg>
 );

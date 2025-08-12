@@ -41,8 +41,10 @@ export { IconMinusLarge } from './IconMinusLarge';
 export { IconMoon } from './IconMoon';
 export { IconPageTextAdd } from './IconPageTextAdd';
 export { IconPaperclip1 } from './IconPaperclip1';
+export { IconPause } from './IconPause';
 export { IconPencil } from './IconPencil';
 export { IconPencil1 } from './IconPencil1';
+export { IconPencil2 } from './IconPencil2';
 export { IconPeople2 } from './IconPeople2';
 export { IconPhone } from './IconPhone';
 export { IconPlusLarge } from './IconPlusLarge';
@@ -106,8 +108,10 @@ export { IconVolumeFull } from './IconVolumeFull';
 //   IconMoon
 //   IconPageTextAdd
 //   IconPaperclip1
+//   IconPause
 //   IconPencil
 //   IconPencil1
+//   IconPencil2
 //   IconPeople2
 //   IconPhone
 //   IconPlusLarge
