@@ -1,6 +1,6 @@
 {
   "name": "kruti-icon-library",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "type": "module",
   "description": "React icon library with 24px icons and dynamic sizing",
   "main": "dist/index.cjs.js",
