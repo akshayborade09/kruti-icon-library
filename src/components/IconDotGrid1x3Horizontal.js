@@ -1,0 +1,17 @@
+import * as React from 'react';
+
+const IconDotGrid1x3Horizontal = (props) => {
+  const { size = 24, color = 'currentColor', strokeWidth = 2, ...restProps } = props;
+  
+  return React.createElement('svg', {
+    width: size,
+    height: size,
+    stroke: color,
+    strokeWidth: strokeWidth,
+    fill: 'none',
+    viewBox: '0 0 24 24',
+    ...restProps
+  }, [React.createElement('path', { "d": "M12 13C12.552 13 13 12.552 13 12 13 11.448 12.552 11 12 11 11.448 11 11 11.448 11 12 11 12.552 11.448 13 12 13ZM20.5 13C21.052 13 21.5 12.552 21.5 12 21.5 11.448 21.052 11 20.5 11 19.948 11 19.5 11.448 19.5 12 19.5 12.552 19.948 13 20.5 13ZM3.5 13C4.052 13 4.5 12.552 4.5 12 4.5 11.448 4.052 11 3.5 11 2.948 11 2.5 11.448 2.5 12 2.5 12.552 2.948 13 3.5 13Z" }), React.createElement('path', { "linecap": "round", "linejoin": "round", "d": "M12 13C12.552 13 13 12.552 13 12 13 11.448 12.552 11 12 11 11.448 11 11 11.448 11 12 11 12.552 11.448 13 12 13ZM20.5 13C21.052 13 21.5 12.552 21.5 12 21.5 11.448 21.052 11 20.5 11 19.948 11 19.5 11.448 19.5 12 19.5 12.552 19.948 13 20.5 13ZM3.5 13C4.052 13 4.5 12.552 4.5 12 4.5 11.448 4.052 11 3.5 11 2.948 11 2.5 11.448 2.5 12 2.5 12.552 2.948 13 3.5 13Z" })]);
+};
+
+export default IconDotGrid1x3Horizontal;

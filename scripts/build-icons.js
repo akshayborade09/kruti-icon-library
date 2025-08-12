@@ -1,121 +1,151 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { optimize } = require('svgo');
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { optimize } from 'svgo';
+
+// Get current directory in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const iconsDir = path.join(__dirname, '../src/icons');
-const componentsDir = path.join(__dirname, '../src/components');
-const svgoConfig = require('../svgo.config');
+const outDir = path.join(__dirname, '../src/components');
 
-async function buildIcons() {
-  try {
-    // Ensure components directory exists
-    await fs.ensureDir(componentsDir);
-    
-    // Clear existing components
-    await fs.emptyDir(componentsDir);
-    
-    const iconExports = [];
-    
-    // Read all SVG files from icons directory
-    const svgFiles = await fs.readdir(iconsDir);
-    const svgFilesFiltered = svgFiles.filter(file => file.endsWith('.svg'));
-    
-    console.log(`Found ${svgFilesFiltered.length} SVG files`);
-    
-    for (const file of svgFilesFiltered) {
-      try {
-        const filePath = path.join(iconsDir, file);
-        const svgCode = await fs.readFile(filePath, 'utf8');
-        
-        // Generate component name from filename
-        const baseName = path.basename(file, '.svg');
-        
-        // Create descriptive component name with all meaningful words (version 1.6.0 style)
-        const componentName = `Icon${baseName
-          .split(/[,\s-]+/)
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join('')}`;
-        
-        console.log(`Processing: ${file} -> ${componentName}`);
-        
-        // Optimize SVG with SVGO while preserving stroke attributes
-        const result = optimize(svgCode, svgoConfig);
-        let optimizedSvg = result.data;
-        
-        // Extract the inner content (everything between <svg> tags)
-        const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
-        const innerContent = innerContentMatch ? innerContentMatch[1] : '';
-        
-        // Detect if the original SVG has stroke-width attribute
-        const hasOriginalStrokeWidth = /stroke-width=["']([^"']+)["']/.test(svgCode);
-        const originalStrokeWidthMatch = svgCode.match(/stroke-width=["']([^"']+)["']/);
-        const originalStrokeWidth = originalStrokeWidthMatch ? originalStrokeWidthMatch[1] : null;
-        
-        // Generate React component with preserved stroke attributes
-        const reactComponent = `import React from 'react';
+// SVGO configuration to preserve stroke properties and prevent expansion
+const svgoConfig = {
+  plugins: [
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          removeUnknownsAndDefaults: {
+            keepStrokeAndFill: true
+          },
+          convertShapeToPath: false, // ❌ stop converting stroked shapes to filled paths
+          convertPathData: false,    // ❌ no path coordinate rewriting
+        },
+      },
+    },
+    { name: 'removeDimensions', active: true },
+    { name: 'removeAttrs', params: { attrs: '(fill)' } } // remove fill but keep stroke
+  ],
+};
 
-interface IconProps extends React.SVGProps<SVGSVGElement> {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-}
+(async () => {
+  await fs.ensureDir(outDir);
 
-export const ${componentName}: React.FC<IconProps> = ({
-  size = 24,
-  color = 'currentColor',
-  strokeWidth = ${originalStrokeWidth || '1'},
-  ...props
-}) => (
-  <svg
-    {...props}
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke={color}
-    strokeWidth={strokeWidth}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    ${innerContent}
-  </svg>
-);
+  const files = await fs.readdir(iconsDir);
+
+  for (const file of files) {
+    if (!file.endsWith('.svg')) continue;
+
+    const svgPath = path.join(iconsDir, file);
+    const svgCode = await fs.readFile(svgPath, 'utf8');
+
+    // Extract main name before comma for component name
+    const nameWithoutExt = file.replace('.svg', '');
+    const mainName = nameWithoutExt.split(',')[0].trim();
+    
+    const componentName = mainName
+      .split(/[\s-_]+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('');
+
+    // Optimize SVG with SVGO while preserving stroke properties
+    const result = optimize(svgCode, svgoConfig);
+    const optimizedSvg = result.data;
+
+    // Extract the inner content of the SVG (everything between <svg> tags)
+    const innerContentMatch = optimizedSvg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/s);
+    const innerContent = innerContentMatch ? innerContentMatch[1].trim() : '';
+
+    // Convert SVG elements to React.createElement calls
+    const reactElements = innerContent
+      .replace(/<path\s+([^>]*)\/>/g, (match, attrs) => {
+        const attrObj = {};
+        attrs.match(/(\w+)="([^"]*)"/g)?.forEach(attr => {
+          const [key, value] = attr.split('=');
+          attrObj[key] = value.replace(/"/g, '');
+        });
+        
+        // Remove stroke-related attributes since they're set on the SVG element
+        delete attrObj.stroke;
+        delete attrObj['stroke-width'];
+        delete attrObj['stroke-linecap'];
+        delete attrObj['stroke-linejoin'];
+        
+        const attrString = Object.entries(attrObj)
+          .map(([key, value]) => `"${key}": "${value}"`)
+          .join(', ');
+        
+        return `React.createElement('path', { ${attrString} })`;
+      })
+      .replace(/<circle\s+([^>]*)\/>/g, (match, attrs) => {
+        const attrObj = {};
+        attrs.match(/(\w+)="([^"]*)"/g)?.forEach(attr => {
+          const [key, value] = attr.split('=');
+          attrObj[key] = value.replace(/"/g, '');
+        });
+        
+        // Remove stroke-related attributes since they're set on the SVG element
+        delete attrObj.stroke;
+        delete attrObj['stroke-width'];
+        delete attrObj['stroke-linecap'];
+        delete attrObj['stroke-linejoin'];
+        
+        const attrString = Object.entries(attrObj)
+          .map(([key, value]) => `"${key}": "${value}"`)
+          .join(', ');
+        
+        return `React.createElement('circle', { ${attrString} })`;
+      })
+      .replace(/<rect\s+([^>]*)\/>/g, (match, attrs) => {
+        const attrObj = {};
+        attrs.match(/(\w+)="([^"]*)"/g)?.forEach(attr => {
+          const [key, value] = attr.split('=');
+          attrObj[key] = value.replace(/"/g, '');
+        });
+        
+        // Remove stroke-related attributes since they're set on the SVG element
+        delete attrObj.stroke;
+        delete attrObj['stroke-width'];
+        delete attrObj['stroke-linecap'];
+        delete attrObj['stroke-linejoin'];
+        
+        const attrString = Object.entries(attrObj)
+          .map(([key, value]) => `"${key}": "${value}"`)
+          .join(', ');
+        
+        return `React.createElement('rect', { ${attrString} })`;
+      });
+
+    // Split multiple elements and wrap in array
+    const elementArray = reactElements
+      .split(/(?=React\.createElement)/)
+      .filter(el => el.trim())
+      .join(', ');
+
+    // Create the React component with preserved stroke properties
+    const componentCode = `import * as React from 'react';
+
+const Icon${componentName} = (props) => {
+  const { size = 24, color = 'currentColor', strokeWidth = 2, ...restProps } = props;
+  
+  return React.createElement('svg', {
+    width: size,
+    height: size,
+    stroke: color,
+    strokeWidth: strokeWidth,
+    fill: 'none',
+    viewBox: '0 0 24 24',
+    ...restProps
+  }, [${elementArray}]);
+};
+
+export default Icon${componentName};
 `;
-        
-        await fs.writeFile(path.join(componentsDir, `${componentName}.tsx`), reactComponent, 'utf8');
-        iconExports.push(componentName);
-        console.log(`✅ Generated: ${componentName}`);
-        
-      } catch (error) {
-        console.error(`❌ Error processing ${file}:`, error);
-      }
-    }
-    
-    // Generate index.ts file
-    const indexContent = `// Auto-generated icon exports
-// This file is automatically generated by scripts/build-icons.js
-// Do not edit manually
 
-${iconExports.map(name => `export { ${name} } from './${name}';`).join('\n')}
-
-// Available Icons:
-${iconExports.map(name => `//   ${name}`).join('\n')}
-
-// Usage:
-// import { ${iconExports.slice(0, 3).join(', ')} } from 'kruti-icon-library';
-// Control size: <${iconExports[0]} size={16} /> <${iconExports[0]} size={20} /> <${iconExports[0]} size={32} />
-`;
-
-    await fs.writeFile(path.join(componentsDir, 'index.ts'), indexContent, 'utf8');
-    
-    console.log(`\n✅ Icons built successfully into ${componentsDir}`);
-    console.log(`✅ Generated ${iconExports.length} icons`);
-    
-  } catch (error) {
-    console.error('❌ Build failed:', error);
-    process.exit(1);
+    await fs.writeFile(path.join(outDir, `Icon${componentName}.js`), componentCode, 'utf8');
   }
-}
 
-buildIcons();
+  console.log(`✅ Icons built successfully into ${outDir}`);
+})();
