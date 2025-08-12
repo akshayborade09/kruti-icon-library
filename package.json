@@ -20,7 +20,6 @@
     "LICENSE"
   ],
   "scripts": {
-    "generate-icons": "tsx scripts/generate-icons.ts",
     "build:icons": "node scripts/build-icons.js",
     "build": "rollup -c",
     "dev": "rollup -c -w",
