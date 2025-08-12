@@ -30,7 +30,7 @@ async function buildIcons() {
         // Generate component name from filename
         const baseName = path.basename(file, '.svg');
         
-        // Create descriptive component name like in version 1.6.0
+        // Create descriptive component name with all meaningful words (version 1.6.0 style)
         const componentName = `Icon${baseName
           .split(/[,\s-]+/)
           .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
