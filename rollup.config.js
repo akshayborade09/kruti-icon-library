@@ -21,13 +21,15 @@ export default {
   plugins: [
     peerDepsExternal(),
     resolve({
-      browser: true
+      browser: true,
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
     }),
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
       declarationDir: './dist',
-      exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.ts', '**/*.stories.tsx']
+      exclude: ['**/*.test.ts', '**/*.test.tsx', '**/*.stories.ts', '**/*.stories.tsx'],
+      jsx: 'react-jsx'
     }),
     terser()
   ],
