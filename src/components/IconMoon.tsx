@@ -23,6 +23,6 @@ export const IconMoon: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path fill="#000" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10v-.006a.5.5 0 0 0-.815-.388 6.25 6.25 0 0 1-8.791-8.791.5.5 0 0 0-.388-.815z"/>
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M21.5 11.994A6.75 6.75 0 0 1 12.006 2.5H12a9.5 9.5 0 1 0 9.5 9.5z"/>
   </svg>
 );

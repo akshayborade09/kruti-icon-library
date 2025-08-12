@@ -23,6 +23,6 @@ export const IconPhone: React.FC<IconProps> = ({
     strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path fill="#000" fill-rule="evenodd" d="M5 4.5A3.5 3.5 0 0 1 8.5 1h7A3.5 3.5 0 0 1 19 4.5v15a3.5 3.5 0 0 1-3.5 3.5h-7A3.5 3.5 0 0 1 5 19.5zM9.5 20a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z" clip-rule="evenodd"/>
+    <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M9.5 20.5h5m-6 2h7a3 3 0 0 0 3-3v-15a3 3 0 0 0-3-3h-7a3 3 0 0 0-3 3v15a3 3 0 0 0 3 3"/>
   </svg>
 );
