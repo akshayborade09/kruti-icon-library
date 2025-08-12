@@ -29,12 +29,41 @@ async function buildIcons() {
         
         // Generate component name from filename
         const baseName = path.basename(file, '.svg');
-        const componentName = `Icon${baseName
-          .split(/[,\s-]+/)
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-          .join('')}`;
         
-        console.log(`Processing: ${file} -> ${componentName}`);
+        // Create simple component name with better logic
+        let componentName = 'Icon';
+        const words = baseName.split(/[,\s-]+/);
+        
+        // Build a meaningful name from key words
+        const keyWords = [];
+        for (const word of words) {
+          const cleanWord = word.trim().toLowerCase();
+          if (cleanWord && cleanWord !== 'icon' && cleanWord !== 'svg' && 
+              cleanWord !== '1' && cleanWord !== '2' && cleanWord !== '3' &&
+              cleanWord !== 'large' && cleanWord !== 'big' && cleanWord !== 'small') {
+            keyWords.push(word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+          }
+        }
+        
+        // Take first 2-3 meaningful words to create unique names
+        if (keyWords.length >= 2) {
+          componentName += keyWords.slice(0, 2).join('');
+        } else if (keyWords.length === 1) {
+          componentName += keyWords[0];
+        } else {
+          // Fallback: use first word
+          componentName += words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+        }
+        
+        // Handle duplicates by adding a counter suffix
+        let finalComponentName = componentName;
+        let counter = 1;
+        while (iconExports.includes(finalComponentName)) {
+          finalComponentName = `${componentName}${counter}`;
+          counter++;
+        }
+        
+        console.log(`Processing: ${file} -> ${finalComponentName}`);
         
         // Optimize SVG with SVGO while preserving stroke attributes
         const result = optimize(svgCode, svgoConfig);
@@ -58,7 +87,7 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   strokeWidth?: number;
 }
 
-export const ${componentName}: React.FC<IconProps> = ({
+export const ${finalComponentName}: React.FC<IconProps> = ({
   size = 24,
   color = 'currentColor',
   strokeWidth = ${originalStrokeWidth || '1'},
@@ -81,9 +110,9 @@ export const ${componentName}: React.FC<IconProps> = ({
 );
 `;
         
-        await fs.writeFile(path.join(componentsDir, `${componentName}.tsx`), reactComponent, 'utf8');
-        iconExports.push(componentName);
-        console.log(`✅ Generated: ${componentName}`);
+        await fs.writeFile(path.join(componentsDir, `${finalComponentName}.tsx`), reactComponent, 'utf8');
+        iconExports.push(finalComponentName);
+        console.log(`✅ Generated: ${finalComponentName}`);
         
       } catch (error) {
         console.error(`❌ Error processing ${file}:`, error);
